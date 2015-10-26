@@ -120,11 +120,11 @@ public class XLog{
 //	}
 	
 	private static boolean allowConsoleLogPrint(byte printLevel){
-	    return sXLogConfig.getConsoleLogLevel() >= printLevel && sXLogConfig.getConsoleLogLevel() != LogLevel.OFF;
+	    return sXLogConfig.getConsoleLogLevel() <= printLevel && sXLogConfig.getConsoleLogLevel() != LogLevel.OFF;
 	}
 	
 	private static boolean allowFileLogPrint(byte printLevel){
-	    return sXLogConfig.getFileLogLevel() >= printLevel && sXLogConfig.getConsoleLogLevel() != LogLevel.OFF;
+	    return sXLogConfig.getFileLogLevel() <= printLevel && sXLogConfig.getFileLogLevel() != LogLevel.OFF;
 	}
 	
 	private static String getDefaultTag()
