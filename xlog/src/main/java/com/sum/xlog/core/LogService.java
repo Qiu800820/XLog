@@ -2,7 +2,6 @@ package com.sum.xlog.core;
 
 import android.app.Service;
 import android.content.Intent;
-import android.nfc.Tag;
 import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
@@ -39,7 +38,8 @@ public class LogService extends Service{
 
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
-	    
+		if(intent == null)
+			return super.onStartCommand(intent, flags, startId);
 	    String action = intent.getAction();
 	    if(null == action || action.trim().length() <= 0){
 	        return super.onStartCommand(intent, flags, startId);

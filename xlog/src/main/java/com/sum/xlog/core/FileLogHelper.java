@@ -167,7 +167,8 @@ public class FileLogHelper
         }
         mExecutorService = null;
         relaseCache();
-        mReentrantLock.unlock();
+        if(mReentrantLock.isLocked())
+            mReentrantLock.unlock();
     }
     
     
