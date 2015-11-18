@@ -25,3 +25,4 @@ XLogConfiguration.Builder builder = new XLogConfiguration.Builder(MyApplication.
 XLog.startMethod(TAG, "onCreate");
 XLog.endMethod(TAG, "onCreate");
 ```
+Email： <qiujunsen@163.com><br>
