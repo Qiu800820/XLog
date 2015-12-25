@@ -132,7 +132,6 @@ public class FileLogHelper
             boolean logFileDirSpaceMax = FileUtil.logFileDirSpaceMax(fileDir, xLogConfiguration.getFileLogDiskMemorySize());
             
             if(logFileDirSpaceMax){
-            	// TODO 全删掉太狠了
                 FileUtil.delAllFileByDir(fileDir);
             }
             

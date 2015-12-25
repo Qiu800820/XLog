@@ -31,7 +31,15 @@ public class FileUtil {
     public static String getSdcardPath(){
         return Environment.getExternalStorageDirectory().getAbsolutePath();
     }
-    
+
+    public static String getTodayLogFilePath(){
+        StringBuilder filePath = new StringBuilder();
+        filePath.append(getXLogPath());
+        filePath.append(File.separator);
+        filePath.append(getTodayLogFileName());
+        return filePath.toString();
+    }
+
     public static String getTodayLogFileName(){
         Date nowTime = new Date();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(DATE_PATTERN);

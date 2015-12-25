@@ -1,7 +1,7 @@
 ##XLOG简介
 * 自动保存LOG
 * 过期删除LOG,控制LOG存储大小
-* 一键上传LOG
+* 自定义上传LOG
 * 自定义Crash操作
 
 
@@ -19,9 +19,12 @@ XLogConfiguration.Builder builder = new XLogConfiguration.Builder(MyApplication.
 				.setOriginalHandler(Thread.getDefaultUncaughtExceptionHandler()) //第三方统计
 				.setOnUpdateCrashInfoListener(null) //Crash自动上传处理
 				.setFileLogRetentionPeriod(7); //过期删除
-		XLog.init(builder.build());<br>
+		XLog.init(builder.build());
 
 
-XLog.startMethod(TAG, "onCreate");
-XLog.endMethod(TAG, "onCreate");
+
+XLog.startMethod(TAG, "方法名");
+XLog.endMethod(TAG, "方法名");
+
+
 ```

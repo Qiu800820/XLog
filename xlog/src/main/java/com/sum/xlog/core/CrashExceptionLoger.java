@@ -53,8 +53,8 @@ public class CrashExceptionLoger implements CrashHandler.OnCaughtCrashExceptionL
                 OnUpdateCrashInfoListener mOnUpdateCrashInfoListener = XLog.getXLogConfiguration().getOnUpdateCrashInfoListener();
                 
                 if(mOnUpdateCrashInfoListener != null){
-                	File file = new File(FileUtil.getTodayLogFileName());
-                	if(file != null && file.exists())
+                	File file = new File(FileUtil.getTodayLogFilePath());
+                	if(file.exists())
 	                	mOnUpdateCrashInfoListener.onUpdateCrashInfo(file);
                 }
                 
