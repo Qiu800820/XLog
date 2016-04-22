@@ -44,13 +44,13 @@ public class FileLogHelper
         mReentrantLock = new ReentrantLock();
     }
     
-    public void logToFile(String log, Throwable e, String tag){
+    public void logToFile(String log, Throwable e, String tag, int logLevel){
         
         if(relased){
             return;
         }
         
-        String logMsg = OtherUtil.formatLog(tag, log, e);
+        String logMsg = OtherUtil.formatLog(tag, log, e, logLevel);
         
         addLogTocache(logMsg);
         if(getCacheSize() >= LOG_CACHE_POLL_SIZE){

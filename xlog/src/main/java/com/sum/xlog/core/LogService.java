@@ -52,7 +52,7 @@ public class LogService extends Service{
 	private void onCommandLog(Intent intent)
     {
         String log = intent.getStringExtra(EXTRA_KEY_LOG);
-        FileLogHelper.getInstance().logToFile(log, null, null);
+        FileLogHelper.getInstance().logToFile(log, null, null, LogLevel.D);
     }
 
     @Override

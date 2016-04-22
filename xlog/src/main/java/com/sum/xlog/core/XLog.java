@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.util.Log;
 
 import com.sum.xlog.util.FileUtil;
+import com.sum.xlog.util.OtherUtil;
 
 import java.io.File;
 
@@ -30,6 +31,7 @@ public class XLog{
      */
 	public static void init(Context context){
 	    init(XLogConfiguration.createDefault(context));
+
 	}
 	
 	/**
@@ -41,7 +43,7 @@ public class XLog{
 		if(null == configuration){
 			throw new IllegalArgumentException(CONFIG_NOT_NULL);
 		}
-		
+
 		if(sXLogConfig == null){
 		    
 			Log.d(TAG, "Initialize Xlog with configuration");
@@ -53,6 +55,8 @@ public class XLog{
 			    CrashHandler.getInstance().init(sXLogConfig.getOriginalHandler());
 			    CrashHandler.getInstance().setCaughtCrashExceptionListener(new CrashExceptionLoger(sAppContext));
 			}
+
+            OtherUtil.RUN_PACKAGE_NAME = configuration.getContext().getPackageName();
 		}else {
 			Log.w(TAG, "Try to initialize Xlog which had already been initialized before. To re-init Xlog with new configuration call Xlog.destroy() at first.");
 		}
@@ -129,7 +133,7 @@ public class XLog{
 	
 	private static String getDefaultTag()
     {
-        return null;
+        return sXLogConfig.getDefaultTag();
     }
 	/****          Log.v           ******/
     public static void v(String msg, Throwable throwable)
@@ -141,7 +145,7 @@ public class XLog{
             Log.v(getDefaultTag(), msg, throwable);
         }
         if(allowFileLogPrint(LogLevel.V)){
-            FileLogHelper.getInstance().logToFile(msg, throwable, getDefaultTag());
+            FileLogHelper.getInstance().logToFile(msg, throwable, getDefaultTag(), LogLevel.V);
         }
     }
     
@@ -154,7 +158,7 @@ public class XLog{
             Log.v(getDefaultTag(), msg);
         }
         if(allowFileLogPrint(LogLevel.V)){
-            FileLogHelper.getInstance().logToFile(msg, null, getDefaultTag());
+            FileLogHelper.getInstance().logToFile(msg, null, getDefaultTag(), LogLevel.V);
         }
         
     }
@@ -168,7 +172,7 @@ public class XLog{
             Log.v(tag, msg);
         }
         if(allowFileLogPrint(LogLevel.V)){
-            FileLogHelper.getInstance().logToFile(msg, null, tag);
+            FileLogHelper.getInstance().logToFile(msg, null, tag, LogLevel.V);
         }
         
     }
@@ -190,7 +194,7 @@ public class XLog{
             Log.v(tag, msg);
         }
         if(allowFileLogPrint(LogLevel.V)){
-            FileLogHelper.getInstance().logToFile(msg, null, tag);
+            FileLogHelper.getInstance().logToFile(msg, null, tag, LogLevel.V);
         }
         
     }
@@ -204,7 +208,7 @@ public class XLog{
             Log.v(tag, msg);
         }
         if(allowFileLogPrint(LogLevel.V)){
-            FileLogHelper.getInstance().logToFile(msg, throwable, tag);
+            FileLogHelper.getInstance().logToFile(msg, throwable, tag, LogLevel.V);
         }
         
     }
@@ -218,7 +222,7 @@ public class XLog{
             Log.d(getDefaultTag(), msg);
         }
         if(allowFileLogPrint(LogLevel.D)){
-        	FileLogHelper.getInstance().logToFile(msg, null, getDefaultTag());
+        	FileLogHelper.getInstance().logToFile(msg, null, getDefaultTag(), LogLevel.D);
         }
         
     }
@@ -233,7 +237,7 @@ public class XLog{
            Log.d(tag, msg);
        }
        if(allowFileLogPrint(LogLevel.D)){
-    	   FileLogHelper.getInstance().logToFile(msg, null, tag);
+    	   FileLogHelper.getInstance().logToFile(msg, null, tag, LogLevel.D);
        }
         
     }
@@ -255,7 +259,7 @@ public class XLog{
             Log.d(tag, msg);
         }
         if(allowFileLogPrint(LogLevel.D)){
-            FileLogHelper.getInstance().logToFile(msg, null, tag);
+            FileLogHelper.getInstance().logToFile(msg, null, tag, LogLevel.D);
         }
         
     }
@@ -269,7 +273,7 @@ public class XLog{
             Log.d(getDefaultTag(), msg, throwable);
         }
         if(allowFileLogPrint(LogLevel.D)){
-        	FileLogHelper.getInstance().logToFile(msg, throwable, getDefaultTag());
+        	FileLogHelper.getInstance().logToFile(msg, throwable, getDefaultTag(), LogLevel.D);
         }
         
     }
@@ -284,7 +288,7 @@ public class XLog{
             Log.d(tag, msg, throwable);
         }
         if(allowFileLogPrint(LogLevel.D)){
-        	FileLogHelper.getInstance().logToFile(msg, throwable, tag);
+        	FileLogHelper.getInstance().logToFile(msg, throwable, tag, LogLevel.D);
         }
         
     }
@@ -299,7 +303,7 @@ public class XLog{
             Log.i(getDefaultTag(), msg);
         }
         if(allowFileLogPrint(LogLevel.I)){
-        	FileLogHelper.getInstance().logToFile(msg, null, getDefaultTag());
+        	FileLogHelper.getInstance().logToFile(msg, null, getDefaultTag(), LogLevel.I);
         }
         
     }
@@ -313,7 +317,7 @@ public class XLog{
             Log.i(tag, msg);
         }
         if(allowFileLogPrint(LogLevel.I)){
-        	FileLogHelper.getInstance().logToFile(msg, null, tag);
+        	FileLogHelper.getInstance().logToFile(msg, null, tag, LogLevel.I);
         }
         
     }
@@ -335,7 +339,7 @@ public class XLog{
             Log.i(tag, msg);
         }
         if(allowFileLogPrint(LogLevel.I)){
-            FileLogHelper.getInstance().logToFile(msg, null, tag);
+            FileLogHelper.getInstance().logToFile(msg, null, tag, LogLevel.I);
         }
         
     }
@@ -349,7 +353,7 @@ public class XLog{
             Log.i(getDefaultTag(), msg, throwable);
         }
         if(allowFileLogPrint(LogLevel.I)){
-        	FileLogHelper.getInstance().logToFile(msg, throwable, getDefaultTag());
+        	FileLogHelper.getInstance().logToFile(msg, throwable, getDefaultTag(), LogLevel.I);
         }
         
     }
@@ -363,7 +367,7 @@ public class XLog{
             Log.i(tag, msg, throwable);
         }
         if(allowFileLogPrint(LogLevel.I)){
-        	FileLogHelper.getInstance().logToFile(msg, throwable, tag);
+        	FileLogHelper.getInstance().logToFile(msg, throwable, tag, LogLevel.I);
         }
         
     }
@@ -377,7 +381,7 @@ public class XLog{
             Log.w(getDefaultTag(), msg);
         }
         if(allowFileLogPrint(LogLevel.W)){
-        	FileLogHelper.getInstance().logToFile(msg, null, getDefaultTag());
+        	FileLogHelper.getInstance().logToFile(msg, null, getDefaultTag(), LogLevel.W);
         }
         
     }
@@ -391,7 +395,7 @@ public class XLog{
             Log.w(tag, msg);
         }
         if(allowFileLogPrint(LogLevel.W)){
-        	FileLogHelper.getInstance().logToFile(msg, null, tag);
+        	FileLogHelper.getInstance().logToFile(msg, null, tag, LogLevel.W);
         }
         
     }
@@ -413,7 +417,7 @@ public class XLog{
             Log.w(tag, msg);
         }
         if(allowFileLogPrint(LogLevel.W)){
-            FileLogHelper.getInstance().logToFile(msg, null, tag);
+            FileLogHelper.getInstance().logToFile(msg, null, tag, LogLevel.W);
         }
         
     }
@@ -427,7 +431,7 @@ public class XLog{
             Log.w(getDefaultTag(), msg, throwable);
         }
         if(allowFileLogPrint(LogLevel.W)){
-        	FileLogHelper.getInstance().logToFile(msg, throwable, getDefaultTag());
+        	FileLogHelper.getInstance().logToFile(msg, throwable, getDefaultTag(), LogLevel.W);
         }
         
     }
@@ -441,7 +445,7 @@ public class XLog{
             Log.w(tag, msg, throwable);
         }
         if(allowFileLogPrint(LogLevel.W)){
-        	FileLogHelper.getInstance().logToFile(msg, throwable, tag);
+        	FileLogHelper.getInstance().logToFile(msg, throwable, tag, LogLevel.W);
         }
     }
     /****          Log.e           ******/
@@ -454,7 +458,7 @@ public class XLog{
             Log.w(getDefaultTag(), msg);
         }
         if(allowFileLogPrint(LogLevel.E)){
-        	FileLogHelper.getInstance().logToFile(msg, null, getDefaultTag());
+        	FileLogHelper.getInstance().logToFile(msg, null, getDefaultTag(), LogLevel.E);
         }
     }
 
@@ -467,7 +471,7 @@ public class XLog{
             Log.w(tag, msg);
         }
         if(allowFileLogPrint(LogLevel.E)){
-        	FileLogHelper.getInstance().logToFile(msg, null, tag);
+        	FileLogHelper.getInstance().logToFile(msg, null, tag, LogLevel.E);
         }
         
     }
@@ -481,7 +485,7 @@ public class XLog{
             Log.w(getDefaultTag(), msg, throwable);
         }
         if(allowFileLogPrint(LogLevel.E)){
-        	FileLogHelper.getInstance().logToFile(msg, throwable, getDefaultTag());
+        	FileLogHelper.getInstance().logToFile(msg, throwable, getDefaultTag(), LogLevel.E);
         }
         
     }
@@ -495,7 +499,7 @@ public class XLog{
             Log.w(tag, msg, throwable);
         }
         if(allowFileLogPrint(LogLevel.E)){
-        	FileLogHelper.getInstance().logToFile(msg, throwable, tag);
+        	FileLogHelper.getInstance().logToFile(msg, throwable, tag, LogLevel.E);
         }
         
     }
@@ -517,7 +521,7 @@ public class XLog{
             Log.e(tag, msg, throwable);
         }
         if(allowFileLogPrint(LogLevel.E)){
-            FileLogHelper.getInstance().logToFile(msg, throwable, tag);
+            FileLogHelper.getInstance().logToFile(msg, throwable, tag, LogLevel.E);
         }
         
     }
@@ -532,7 +536,7 @@ public class XLog{
             Log.wtf(getDefaultTag(), msg);
         }
         if(allowFileLogPrint(LogLevel.WTF)){
-        	FileLogHelper.getInstance().logToFile(msg, null, getDefaultTag());
+        	FileLogHelper.getInstance().logToFile(msg, null, getDefaultTag(), LogLevel.E);
         }
         
     }
@@ -546,7 +550,7 @@ public class XLog{
             Log.wtf(tag, msg);
         }
         if(allowFileLogPrint(LogLevel.WTF)){
-        	FileLogHelper.getInstance().logToFile(msg, null, tag);
+        	FileLogHelper.getInstance().logToFile(msg, null, tag, LogLevel.E);
         }
         
     }
@@ -568,7 +572,7 @@ public class XLog{
             Log.wtf(tag, msg);
         }
         if(allowFileLogPrint(LogLevel.WTF)){
-            FileLogHelper.getInstance().logToFile(msg, null, tag);
+            FileLogHelper.getInstance().logToFile(msg, null, tag, LogLevel.E);
         }
         
     }
@@ -582,7 +586,7 @@ public class XLog{
             Log.wtf(getDefaultTag(), msg);
         }
         if(allowFileLogPrint(LogLevel.WTF)){
-        	FileLogHelper.getInstance().logToFile(msg, throwable, getDefaultTag());
+        	FileLogHelper.getInstance().logToFile(msg, throwable, getDefaultTag(), LogLevel.E);
         }
         
     }
@@ -596,13 +600,13 @@ public class XLog{
             Log.wtf(tag, msg,throwable);
         }
         if(allowFileLogPrint(LogLevel.WTF)){
-        	FileLogHelper.getInstance().logToFile(msg, throwable, tag);
+        	FileLogHelper.getInstance().logToFile(msg, throwable, tag, LogLevel.E);
         }
         
     }
     
     /*project */ static void crash(String msg){
-    	FileLogHelper.getInstance().logToFile(msg, null, null);
+    	FileLogHelper.getInstance().logToFile(msg, null, null, LogLevel.E);
     }
 
     public static void startMethod(String tag, String method){
@@ -613,7 +617,7 @@ public class XLog{
             Log.d(tag, "=== " + method  + " Start===");
         }
         if(allowFileLogPrint(LogLevel.D)){
-            FileLogHelper.getInstance().logToFile("=== " + method  + " Start===", null, tag);
+            FileLogHelper.getInstance().logToFile("=== " + method  + " Start===", null, tag, LogLevel.D);
         }
     }
 
@@ -625,7 +629,7 @@ public class XLog{
             Log.d(tag, "=== " + method  + " End===");
         }
         if(allowFileLogPrint(LogLevel.D)){
-            FileLogHelper.getInstance().logToFile("=== " + method  + " End===", null, tag);
+            FileLogHelper.getInstance().logToFile("=== " + method  + " End===", null, tag, LogLevel.D);
         }
     }
 

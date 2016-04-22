@@ -1,8 +1,5 @@
 package com.sum.xlog.util;
 
-import java.io.Closeable;
-import java.io.File;
-import java.util.Date;
 import android.annotation.SuppressLint;
 import android.database.Cursor;
 import android.os.Build;
@@ -10,11 +7,17 @@ import android.os.Environment;
 import android.os.StatFs;
 import android.util.Log;
 
+import java.io.Closeable;
+import java.io.File;
+import java.util.Date;
+
 
 public class OtherUtil {
 	
 	public static final String TAG = "OtherUtil";
 	public static final int SPACE_IS_NOT_ENOUGH = -1;
+
+    public static String RUN_PACKAGE_NAME = "";
 	
     /**
      * 
@@ -51,7 +54,7 @@ public class OtherUtil {
     }
     
     
-    public static String formatLog(String tag,String message, Throwable e){
+    public static String formatLog(String tag,String message, Throwable e, int logLevel){
         
     	// 获取日志时间
         String logTime = DateUtil.formatDate(new Date(),
@@ -59,10 +62,15 @@ public class OtherUtil {
         
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(logTime);
-        
+        stringBuilder.append(",");
         stringBuilder.append(Thread.currentThread().getId());
+        stringBuilder.append(",");
         stringBuilder.append(tag);
-        stringBuilder.append(getLineNumber(e));
+        stringBuilder.append(",");
+        stringBuilder.append(getMethodPositionInfo());
+        stringBuilder.append(",");
+        stringBuilder.append(logLevel);
+        stringBuilder.append(",");
         
         stringBuilder.append(message);
         
@@ -80,14 +88,16 @@ public class OtherUtil {
     /**
      * @brief 得到异常所在代码的行数 如果没有行信息,返回-1
      */
-    private static int getLineNumber(Throwable e) {
-        int lineNum = -1;
-        if (e != null) {
-            StackTraceElement[] trace = e.getStackTrace();
-            if (trace != null && trace.length > 0)
-                lineNum = trace[0].getLineNumber();
+    private static String getMethodPositionInfo() {
+        String errorPositionMsg = null;
+        StackTraceElement[] traces = Thread.currentThread().getStackTrace();
+        for(StackTraceElement trace : traces) {
+            if(trace.getClassName().contains(RUN_PACKAGE_NAME)) {
+                errorPositionMsg = String.format("\"%s : %s\"", trace.getFileName(),
+                        trace.getMethodName());
+            }
         }
-        return lineNum;
+        return errorPositionMsg;
 
     }
 	
@@ -100,16 +110,7 @@ public class OtherUtil {
         return Environment.getExternalStorageState().equals(
                 Environment.MEDIA_MOUNTED);
     }
-    
-	public static StackTraceElement getCurrentStackTraceElement() {
-		return Thread.currentThread().getStackTrace()[3];
-	}
 
-	public static StackTraceElement getCallerStackTraceElement() {
-		return Thread.currentThread().getStackTrace()[4];
-	}
-	
-	
 	public static void closeQuietly(Closeable closeable){
 	    
 	    if(null != closeable){
