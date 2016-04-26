@@ -1,6 +1,7 @@
 package com.sum.xlog.sample;
 
 import android.app.Application;
+import android.util.Log;
 
 import com.sum.xlog.core.LogLevel;
 import com.sum.xlog.core.OnUpdateCrashInfoListener;
@@ -28,6 +29,13 @@ public class MyApplication extends Application {
 					@Override
 					public void onUpdateCrashInfo(File file) {
 						// TODO 可以根据自己的需求实现上传文件至服务器
+						try {
+							Log.d("onUpdateCrashInfo","onUpdateCrashInfo");
+							Thread.sleep(2000);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+
 					}
 				}) //Crash自动上传处理
 

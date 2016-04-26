@@ -1,5 +1,8 @@
 package com.sum.xlog.core;
 
+import android.os.*;
+import android.os.Process;
+
 import java.lang.Thread.UncaughtExceptionHandler;
 
 
@@ -89,6 +92,8 @@ public class CrashHandler implements UncaughtExceptionHandler {
 	    if(mCaughtCrashExceptionListener == null && originalHandler == null){
 	    	//外部不关心异常crash异常，那么我们调用默认异常处理handle去处理异常
 	        mDefaultHandler.uncaughtException(thread, ex);
-	    }
+	    }else{
+			android.os.Process.killProcess(Process.myPid());
+		}
 	}
 }

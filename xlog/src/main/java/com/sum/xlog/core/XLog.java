@@ -606,7 +606,8 @@ public class XLog{
     }
     
     /*project */ static void crash(String msg){
-    	FileLogHelper.getInstance().logToFile(msg, null, null, LogLevel.E);
+        Log.e(getDefaultTag(), msg);
+    	FileLogHelper.getInstance().logToFile(msg, null, null, LogLevel.E, true);
     }
 
     public static void startMethod(String tag, String method){

@@ -16,16 +16,12 @@ import java.io.Writer;
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 
 public class CrashExceptionLoger implements CrashHandler.OnCaughtCrashExceptionListener
 {
     
     public static final String TAG = "CrashExceptionProcess";
-    /** 当crash异常发生时该使用该线程处理余下事宜 **/
-    private ExecutorService mProcessExecutor;
     /** 引用程序Context **/
     private Context mAppContext;
     /** 用来存储设备信息和异常信息 */
@@ -34,32 +30,21 @@ public class CrashExceptionLoger implements CrashHandler.OnCaughtCrashExceptionL
     public CrashExceptionLoger(Context context)
     {
         mAppContext = context;
-        mProcessExecutor = Executors.newSingleThreadExecutor();
     }
 
     @Override
     public void onCaughtCrashException(Thread thread, Throwable ex)
     {
-        final Throwable fex = ex;
-        
-        mProcessExecutor.execute(new Runnable()
-        {
-            
-            @Override
-            public void run()
-            {
-                collectDeviceInfo(mAppContext);
-                logCrashInfo(fex);
-                OnUpdateCrashInfoListener mOnUpdateCrashInfoListener = XLog.getXLogConfiguration().getOnUpdateCrashInfoListener();
+        collectDeviceInfo(mAppContext);
+        logCrashInfo(ex);
+        OnUpdateCrashInfoListener mOnUpdateCrashInfoListener = XLog.getXLogConfiguration().getOnUpdateCrashInfoListener();
+
+        if (mOnUpdateCrashInfoListener != null) {
+            File file = new File(FileUtil.getTodayLogFilePath());
+            if (file.exists())
+                mOnUpdateCrashInfoListener.onUpdateCrashInfo(file);
+        }
                 
-                if(mOnUpdateCrashInfoListener != null){
-                	File file = new File(FileUtil.getTodayLogFilePath());
-                	if(file.exists())
-	                	mOnUpdateCrashInfoListener.onUpdateCrashInfo(file);
-                }
-                
-            }
-        });
     }
     
     /**

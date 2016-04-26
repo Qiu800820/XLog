@@ -14,4 +14,12 @@
         android:text="发送日志"
         />
 
+    <Button
+        android:id="@+id/testCrash"
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:text="测试Crash"
+        android:layout_below="@id/send_log"
+        />
+
 </RelativeLayout>

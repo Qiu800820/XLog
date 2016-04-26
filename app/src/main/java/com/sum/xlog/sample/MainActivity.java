@@ -40,12 +40,21 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Intent data = new Intent(Intent.ACTION_SEND);
-                data.putExtra(Intent.EXTRA_EMAIL,new String[] {"test@test.com"});
+                data.putExtra(Intent.EXTRA_EMAIL, new String[]{"test@test.com"});
                 data.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.app_name));
                 data.putExtra(Intent.EXTRA_TEXT, "这是我的LOG日志");
                 data.putExtra(Intent.EXTRA_STREAM, Uri.parse("file://" + FileUtil.getTodayLogFilePath()));
                 data.setType("message/rfc882");
                 startActivity(Intent.createChooser(data, getString(R.string.app_name)));
+            }
+        });
+
+        Button testCrash = (Button) findViewById(R.id.testCrash);
+        testCrash.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String a = null;
+                a.length();
             }
         });
 

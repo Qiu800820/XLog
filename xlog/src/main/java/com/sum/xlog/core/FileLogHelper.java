@@ -17,7 +17,7 @@ import java.util.concurrent.locks.ReentrantLock;
 public class FileLogHelper
 {
     public static final String TAG = "FileLogHelper";
-    public static final int LOG_CACHE_POLL_SIZE = 30;
+    public static final int LOG_CACHE_POLL_SIZE = 20;
     private List<String> logCache = null;
     private ExecutorService mExecutorService;
     private ReentrantLock mReentrantLock;
@@ -43,8 +43,12 @@ public class FileLogHelper
         mExecutorService = Executors.newSingleThreadExecutor();
         mReentrantLock = new ReentrantLock();
     }
-    
+
     public void logToFile(String log, Throwable e, String tag, int logLevel){
+        logToFile(log, e, tag, logLevel, false);
+    }
+
+    public void logToFile(String log, Throwable e, String tag, int logLevel, boolean isForceSave){
         
         if(relased){
             return;
@@ -53,7 +57,7 @@ public class FileLogHelper
         String logMsg = OtherUtil.formatLog(tag, log, e, logLevel);
         
         addLogTocache(logMsg);
-        if(getCacheSize() >= LOG_CACHE_POLL_SIZE){
+        if(getCacheSize() >= LOG_CACHE_POLL_SIZE || isForceSave){
             
             mExecutorService.execute(new Runnable()
             {

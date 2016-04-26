@@ -37,6 +37,7 @@ public class FileUtil {
         filePath.append(getXLogPath());
         filePath.append(File.separator);
         filePath.append(getTodayLogFileName());
+        filePath.append(XLog.getXLogConfiguration().getLogFileSuffix());
         return filePath.toString();
     }
 

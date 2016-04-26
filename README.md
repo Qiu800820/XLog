@@ -8,7 +8,7 @@
 
 Gradle构建:
 ```javascript
-compile 'com.sum.xlog:xlog:1.0.1'
+compile 'com.sum.xlog:xlog:1.0.2'
 ```
 
 需要声明服务:
