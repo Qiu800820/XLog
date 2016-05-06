@@ -31,7 +31,7 @@ public class XLogConfiguration {
     /**
      * 默认LOG文件大小KB单位
      */
-    public static final long DEFAULT_FILE_LOG_DISK_MEMORYSIZE = 1024 * 100; //100m
+    public static final long DEFAULT_FILE_LOG_DISK_MEMORYSIZE = 1024 * 100L; //100m
     /**
      * 默认文件目录名称(获取包名目录错误的情况下使用)
      */

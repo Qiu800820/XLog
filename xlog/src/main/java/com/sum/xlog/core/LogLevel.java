@@ -44,4 +44,5 @@ public class LogLevel
      */
     public static byte OFF = 6;
 
+    private LogLevel() {}
 }

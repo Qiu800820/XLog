@@ -24,23 +24,24 @@ public class CrashHandler implements UncaughtExceptionHandler {
 	private static CrashHandler instance = new CrashHandler();
 	/** 当crash发生后的接口回调 **/
 	private OnCaughtCrashExceptionListener mCaughtCrashExceptionListener;
-	
-	/**
-	 * 当捕获到Crash异常后会通过该接口回调
-	 */
-	public interface OnCaughtCrashExceptionListener{
-	    void onCaughtCrashException(Thread thread, Throwable ex);
-	}
-	
-	public void setCaughtCrashExceptionListener(OnCaughtCrashExceptionListener mCaughtCrashExceptionListener)
-    {
-        this.mCaughtCrashExceptionListener = mCaughtCrashExceptionListener;
-    }
-	
+
 	/**
 	 * 保证只有一个CrashHandler实例
 	 */
 	private CrashHandler() {}
+
+	/**
+	 * 当捕获到Crash异常后会通过该接口回调
+	 */
+	public interface OnCaughtCrashExceptionListener{
+		void onCaughtCrashException(Thread thread, Throwable ex);
+
+	}
+
+	public void setCaughtCrashExceptionListener(OnCaughtCrashExceptionListener mCaughtCrashExceptionListener)
+    {
+        this.mCaughtCrashExceptionListener = mCaughtCrashExceptionListener;
+    }
 
 	/**
 	 * 获取CrashHandler实例 ,单例模式
