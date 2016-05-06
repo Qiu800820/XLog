@@ -1,6 +1,5 @@
 package com.sum.xlog.util;
 
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -8,12 +7,10 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.SimpleTimeZone;
 import java.util.TimeZone;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import android.content.ContentResolver;
 import android.content.Context;
-import android.text.TextUtils;
 import android.util.Log;
+
+import com.sum.xlog.core.XLog;
 
 /**
  * @class DateUtil
@@ -108,7 +105,7 @@ public class DateUtil {
 			dateString = dateFormat.format(date);
 			break;
 		default:
-			System.out.println("Unknown patternFlag:" + patternFlag);
+			XLog.i("Unknown patternFlag:" + patternFlag);
 		}
 		return dateString;
 	}
@@ -257,8 +254,7 @@ public class DateUtil {
 			// 将字符串格式转化成Date类型
 			date = inputFormat.parse(time);
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			XLog.e("Exception while parsing string date", e);
 		}
 
 		// 输出格式转换对象
@@ -266,9 +262,7 @@ public class DateUtil {
 		// 设置时区
 		outputFormat.setTimeZone(tozone);
 		// 获取转换后的值
-		String result = outputFormat.format(date);
-
-		return result;
+		return outputFormat.format(date);
 	}
 
 
@@ -304,7 +298,7 @@ public class DateUtil {
 		try {
 			date = new SimpleDateFormat(formateType).parse(str);
 		} catch (ParseException e) {
-			e.printStackTrace();
+			XLog.e("Exception while parsing string date", e);
 		}
 		return date;
 	}
@@ -320,7 +314,7 @@ public class DateUtil {
 		try {
 			date = new SimpleDateFormat("yy-MM-dd HH:mm").parse(str);
 		} catch (ParseException e) {
-			e.printStackTrace();
+			XLog.e("Exception while parsing string date", e);
 		}
 		return date;
 	}

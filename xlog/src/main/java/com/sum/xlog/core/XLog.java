@@ -55,7 +55,7 @@ public class XLog{
 			sXLogConfig.getContext().startService(intent);
 			if(sXLogConfig.isCrashHandlerOpen()){
 			    CrashHandler.getInstance().init(sXLogConfig.getOriginalHandler());
-			    CrashHandler.getInstance().setCaughtCrashExceptionListener(new CrashExceptionLoger(sAppContext));
+			    CrashHandler.getInstance().setCaughtCrashExceptionListener(new CrashExceptionLogger(sAppContext));
 			}
 
             OtherUtil.RUN_PACKAGE_NAME = configuration.getContext().getPackageName();

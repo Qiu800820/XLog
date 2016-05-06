@@ -27,6 +27,7 @@ public class LogService extends Service{
 	}
 	
 	public LogService() {
+		// Empty default constructor
 	}
 	
 	@Override
