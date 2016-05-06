@@ -18,7 +18,9 @@ public class OtherUtil {
 	public static final int SPACE_IS_NOT_ENOUGH = -1;
 
     public static String RUN_PACKAGE_NAME = "";
-	
+
+    private OtherUtil() {}
+
     /**
      * 
      * @Title getAvailableSpace

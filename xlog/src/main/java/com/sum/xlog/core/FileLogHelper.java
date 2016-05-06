@@ -23,10 +23,17 @@ public class FileLogHelper
     private ReentrantLock mReentrantLock;
     private boolean relased = false;
     public static FileLogHelper INSTANCE = null;
-    
+
+
+    public FileLogHelper()
+    {
+        logCache = new ArrayList<String>(LOG_CACHE_POLL_SIZE);
+        mExecutorService = Executors.newSingleThreadExecutor();
+        mReentrantLock = new ReentrantLock();
+    }
 
     public static FileLogHelper getInstance(){
-        
+
         if(null == INSTANCE){
             synchronized (FileLogHelper.class){
                 if(null == INSTANCE){
@@ -35,13 +42,6 @@ public class FileLogHelper
             }
         }
         return INSTANCE;
-    }
-    
-    public FileLogHelper()
-    {
-        logCache = new ArrayList<String>(LOG_CACHE_POLL_SIZE);
-        mExecutorService = Executors.newSingleThreadExecutor();
-        mReentrantLock = new ReentrantLock();
     }
 
     public void logToFile(String log, Throwable e, String tag, int logLevel){

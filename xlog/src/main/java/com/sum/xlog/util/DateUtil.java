@@ -36,6 +36,7 @@ public class DateUtil {
 	 * @brief 格式: EEE, dd-MMM-yyyy HH:mm:ss z
 	 */
 	public static final int GMT_ENGLISH_PATTERN_FLAG = 0;
+
 	/**
 	 * @brief 格式: yyyy-MM-dd HH:mm:ss
 	 */
@@ -49,7 +50,7 @@ public class DateUtil {
 	 */
 	public static final int MINUTE_PATTERN_FLAG = 3;
 	/**
-	 * @brief 格式：HH:mm:ss SSS 
+	 * @brief 格式：HH:mm:ss SSS
 	 *  - 用于记录日志打印时间
 	 */
 	public static final int TIME_PATTERN_FLAG = 4;
@@ -61,7 +62,9 @@ public class DateUtil {
 	/**
 	 * 一天时间毫秒
 	 */
-	public static final long ONE_DAY_TIME = 1000  * 60 * 60 * 24 ;
+	public static final long ONE_DAY_TIME = 1000  * 60 * 60 * 24L ;
+
+	private DateUtil() {}
 
 	/**
 	 * @brief 将日期对象格式化成指定格式的字符串
@@ -72,7 +75,7 @@ public class DateUtil {
 	 * @return String 字符串格式的日期
 	 */
 	public static String formatDate(Date date, int patternFlag) {
-		SimpleDateFormat dateFormat = null;
+		SimpleDateFormat dateFormat;
 		String dateString = "";
 		if (date == null) {
 			return dateString;
@@ -119,7 +122,7 @@ public class DateUtil {
 	 * @return Date 解析出来的日期对象，如果解析失败，则返回null
 	 */
 	public static Date parseDate(String dateString, int patternFlag) {
-		SimpleDateFormat dateFormat = null;
+		SimpleDateFormat dateFormat;
 		Date date = null;
 		if (dateString == null || "".equals(dateString.trim())) {
 			return date;
@@ -152,7 +155,7 @@ public class DateUtil {
 			case MONTH_DATE_TIME_PATTERN_FLAG:
 				dateFormat = new SimpleDateFormat(MONTH_DATE_TIME_PATTERN);
 				date = dateFormat.parse(dateString);
-				break;	
+				break;
 			default:
 				Log.w(TAG, "Unknown patternFlag:" + patternFlag);
 			}
@@ -280,7 +283,7 @@ public class DateUtil {
 	 */
 	public static String pareConferenceTime2String(String timeFormate,
 			long timemillis) {
-		String result = null;
+		String result;
 		// 输出格式转换对象
 		SimpleDateFormat outputFormat = new SimpleDateFormat(timeFormate);
 		Date date = new Date(timemillis);
@@ -331,7 +334,7 @@ public class DateUtil {
 	 * @return String 转换后的时间
 	 */
 	public static String parseLongTimeToString(Context context, long longTime) {
-		String result = null;
+		String result;
 		// 将传入的long类型时间转成Calendar对象
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTimeInMillis(longTime);
@@ -355,13 +358,7 @@ public class DateUtil {
 			result = ((hour > 9) ? hour : "0" + hour) + ":"
 					+ (minute > 9 ? minute : "0" + minute);
 			// 如果day+1==todayDay，则表示昨天，显示为昨天
-		}
-		/*
-		 * else if(year == todayYear && month == todayMonth && day+1 ==
-		 * todayDay){
-		 * result=context.getResources().getString(R.string.yestoday); }
-		 */
-		else {
+		} else {
 			result = (month + 1) + "-" + day;
 		}
 		// 返回转换后的形式

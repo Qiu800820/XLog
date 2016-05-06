@@ -27,7 +27,9 @@ import java.util.Date;
 public class FileUtil {
     private static final String TAG = "FileUtil";
     private static final String DATE_PATTERN = "yyyy-MM-dd";
-    
+
+    private FileUtil() {}
+
     public static String getSdcardPath(){
         return Environment.getExternalStorageDirectory().getAbsolutePath();
     }
@@ -48,7 +50,7 @@ public class FileUtil {
     }
     
     public static String getXLogPath(){
-    	String path = null;
+    	String path;
     	
     	XLogConfiguration xLogConfiguration = XLog.getXLogConfiguration();
     	

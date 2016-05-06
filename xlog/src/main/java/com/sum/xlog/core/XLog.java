@@ -24,7 +24,9 @@ public class XLog{
 	public static final String TAG = "XLog";
 	private static XLogConfiguration sXLogConfig;
 	private static Context sAppContext;
-	
+
+    private XLog() {}
+
 	/**
      * @Title init
      * @Description 初始化日志框架，该方法在Android application oncreate 里调用
@@ -115,13 +117,6 @@ public class XLog{
 	public static XLogConfiguration getXLogConfiguration(){
 		return sXLogConfig;
 	}
-	
-//	private static void throwExceptionIfConfigIsNull(){
-//	    
-//	    if(null == sXLogConfig){
-//	        throw new IllegalArgumentException(CONFIG_NOT_NULL);
-//	    }
-//	}
 	
 	private static boolean allowConsoleLogPrint(byte printLevel){
 	    return sXLogConfig.getConsoleLogLevel() <= printLevel && sXLogConfig.getConsoleLogLevel() != LogLevel.OFF;
