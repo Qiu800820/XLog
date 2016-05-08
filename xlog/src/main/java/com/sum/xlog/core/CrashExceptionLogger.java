@@ -18,7 +18,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class CrashExceptionLoger implements CrashHandler.OnCaughtCrashExceptionListener
+public class CrashExceptionLogger implements CrashHandler.OnCaughtCrashExceptionListener
 {
     
     public static final String TAG = "CrashExceptionProcess";
@@ -27,7 +27,7 @@ public class CrashExceptionLoger implements CrashHandler.OnCaughtCrashExceptionL
     /** 用来存储设备信息和异常信息 */
     private Map<String, String> infos = new HashMap<String, String>();
     
-    public CrashExceptionLoger(Context context)
+    public CrashExceptionLogger(Context context)
     {
         mAppContext = context;
     }
