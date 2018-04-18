@@ -1,4 +1,4 @@
-package com.sum.xlog.core;
+package com.sum.xlog.crash;
 
 import android.content.Context;
 import android.content.pm.PackageInfo;
@@ -7,6 +7,7 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Build;
 import android.util.Log;
 
+import com.sum.xlog.core.XLog;
 import com.sum.xlog.util.FileUtil;
 
 import java.io.File;
@@ -40,7 +41,7 @@ public class CrashExceptionLogger implements CrashHandler.OnCaughtCrashException
         OnUpdateCrashInfoListener mOnUpdateCrashInfoListener = XLog.getXLogConfiguration().getOnUpdateCrashInfoListener();
 
         if (mOnUpdateCrashInfoListener != null) {
-            File file = new File(FileUtil.getTodayLogFilePath());
+            File file = FileUtil.getTodayLogFile();
             if (file.exists())
                 mOnUpdateCrashInfoListener.onUpdateCrashInfo(file);
         }

@@ -3,8 +3,8 @@ package com.sum.xlog.sample;
 import android.app.Application;
 import android.util.Log;
 
-import com.sum.xlog.core.LogLevel;
-import com.sum.xlog.core.OnUpdateCrashInfoListener;
+import com.sum.xlog.print.LogLevel;
+import com.sum.xlog.crash.OnUpdateCrashInfoListener;
 import com.sum.xlog.core.XLog;
 import com.sum.xlog.core.XLogConfiguration;
 

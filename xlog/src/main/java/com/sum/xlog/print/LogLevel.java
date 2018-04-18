@@ -1,4 +1,4 @@
-package com.sum.xlog.core;
+package com.sum.xlog.print;
 
 
 /**
@@ -39,10 +39,6 @@ public class LogLevel
      * 只输出ASSERT级别的信息
      */
     public static final byte WTF = 5;
-    /**
-     * 什么都不输出
-     */
-    public static final byte OFF = 6;
 
     private LogLevel() {}
 }

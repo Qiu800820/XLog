@@ -1,67 +1,23 @@
 package com.sum.xlog.util;
 
-import android.annotation.SuppressLint;
-import android.database.Cursor;
-import android.os.Build;
-import android.os.Environment;
-import android.os.StatFs;
 import android.util.Log;
 
 import java.io.Closeable;
-import java.io.File;
-import java.util.Date;
+
+import static com.sum.xlog.util.FileUtil.DATE_PATTERN;
 
 
 public class OtherUtil {
-	
-	public static final String TAG = "OtherUtil";
-	public static final int SPACE_IS_NOT_ENOUGH = -1;
 
-    public static String RUN_PACKAGE_NAME = "";
+    private static final String TAG = "OtherUtil";
+    private static final String METHOD_NAME = "printLog";
 
-    private OtherUtil() {}
 
-    /**
-     * 
-     * @Title getAvailableSpace
-     * @Description 获取目录下可用空间
-     * @param dir
-     * @return
-     * @Throws
-     *
-     */
-    @SuppressLint("NewApi")
-    public static long getAvailableSpace(File dir)
-    {
+    public static String formatLog(String tag, String message, Throwable e, int logLevel) {
 
-        try
-        {
-            final StatFs stats = new StatFs(dir.getPath());
+        // 获取日志时间
+        String logTime = DateUtil.millis2String(System.currentTimeMillis(), DATE_PATTERN, false);
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2)
-            {
-                return stats.getBlockSizeLong() * stats.getAvailableBlocksLong();
-            }
-            else
-            {
-                return stats.getBlockSize() * stats.getAvailableBlocks();
-            }
-        }
-        catch (Throwable e)
-        {
-            Log.e(TAG, e.getMessage(), e);
-            return SPACE_IS_NOT_ENOUGH;
-        }
-
-    }
-    
-    
-    public static String formatLog(String tag,String message, Throwable e, int logLevel){
-        
-    	// 获取日志时间
-        String logTime = DateUtil.formatDate(new Date(),
-                DateUtil.TIME_PATTERN_FLAG);
-        
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(logTime);
         stringBuilder.append(",");
@@ -73,77 +29,71 @@ public class OtherUtil {
         stringBuilder.append(",");
         stringBuilder.append(logLevel);
         stringBuilder.append(",");
-        
+
         stringBuilder.append(message);
-        
-        if(null != e){
+
+        if (null != e) {
             stringBuilder.append("\n");
             stringBuilder.append(Log.getStackTraceString(e));
         }
 
-        
         return stringBuilder.toString();
-        
+
     }
-    
-    
+
+
+
     /**
-     * @brief 得到异常所在代码的行数 如果没有行信息,返回-1
+     * 得到异常所在代码位置信息
      */
-    private static String getMethodPositionInfo() {
-        String errorPositionMsg = null;
+    private static StackTraceElement getStackTraceElementInfo() {
+        StackTraceElement stackTraceElement = null;
         StackTraceElement[] traces = Thread.currentThread().getStackTrace();
-        for(StackTraceElement trace : traces) {
-            if(trace.getClassName().contains(RUN_PACKAGE_NAME)) {
-                errorPositionMsg = String.format("\"%s : %s\"", trace.getFileName(),
-                        trace.getMethodName());
+        int index = 0;
+        int size = traces != null?traces.length:0;
+        for (int i = 0; i < size; i++) {
+            StackTraceElement trace = traces[i];
+            if (trace.getMethodName().contains(METHOD_NAME)) {
+                index = i + 2;
+                break;
             }
         }
-        return errorPositionMsg;
 
-    }
-	
-	
-	/**
-     * @brief 判断手机是否有SD卡
-     * @return true表示有，false表示无
-     */
-    public static boolean hasSDCard() {
-        return Environment.getExternalStorageState().equals(
-                Environment.MEDIA_MOUNTED);
+        if(index < size){
+            stackTraceElement = traces[index];
+        }
+
+        return stackTraceElement;
     }
 
-	public static void closeQuietly(Closeable closeable){
-	    
-	    if(null != closeable){
-	        
-	        try
-            {
+    private static String getMethodPositionInfo() {
+        StackTraceElement stackTraceElement = getStackTraceElementInfo();
+        String methodPositionInfo = null;
+        if(stackTraceElement != null){
+            methodPositionInfo = String.format("%s : %s(%s)", stackTraceElement.getFileName(),
+                    stackTraceElement.getMethodName(), stackTraceElement.getLineNumber());
+        }
+        return methodPositionInfo;
+    }
+
+    public static String getClassNameInfo(){
+        StackTraceElement stackTraceElement = getStackTraceElementInfo();
+        return stackTraceElement != null?stackTraceElement.getClassName():null;
+    }
+
+    public static String getMethodNameInfo() {
+        StackTraceElement stackTraceElement = getStackTraceElementInfo();
+        return stackTraceElement != null?stackTraceElement.getMethodName():null;
+    }
+
+    public static void closeQuietly(Closeable closeable) {
+        if (null != closeable) {
+            try {
                 closeable.close();
-            }
-            catch (Exception e)
-            {
-                Log.e(TAG, e.getMessage(),e);
-            }
-	    }
-	    
-	}
-	
-	
-	public static void closeQuietly(Cursor cursor){
-        
-        if(null != cursor){
-            
-            try
-            {
-                cursor.close();
-            }
-            catch (Exception e)
-            {
-                Log.e(TAG, e.getMessage(),e);
+            } catch (Exception e) {
+                Log.e(TAG, e.getMessage(), e);
             }
         }
-        
-    }
 
+    }
 }

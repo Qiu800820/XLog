@@ -1,17 +1,10 @@
-package com.sum.xlog.core;
+package com.sum.xlog.crash;
 
-import android.os.*;
 import android.os.Process;
 
 import java.lang.Thread.UncaughtExceptionHandler;
 
 
-/**
- * @brief 异常处理类 - 当程序发生Uncaught异常的时候,有该类来接管程序,并记录发送错误报告.
- * @author lu.yao
- * @date 2012-10-9 上午11:24:10
- * 
- */
 public class CrashHandler implements UncaughtExceptionHandler {
 
 	public static final String TAG = CrashHandler.class.getSimpleName();
@@ -52,21 +45,14 @@ public class CrashHandler implements UncaughtExceptionHandler {
 		return instance;
 	}
 
-	/**
-	 * @brief 初始化
-	 * @param context
-	 *            上下文文本对象
-	 * 
-	 */
+
 	public void init() {
 		init(null);
 	}
 	
 	/**
-	 * @brief 初始化
-	 * @param UncaughtExceptionHandler
-	 *            第三方UncaughtExceptionHandler处理
-	 * 
+	 * 初始化
+	 * @param mUncaughtExceptionHandler 第三方UncaughtExceptionHandler处理
 	 */
 	public void init(UncaughtExceptionHandler mUncaughtExceptionHandler){
 		originalHandler = mUncaughtExceptionHandler; 
@@ -91,7 +77,7 @@ public class CrashHandler implements UncaughtExceptionHandler {
 	    }
 	    
 	    if(mCaughtCrashExceptionListener == null && originalHandler == null){
-	    	//外部不关心异常crash异常，那么我们调用默认异常处理handle去处理异常
+	    	//外部不关心crash异常，那么我们调用默认handle去处理异常
 	        mDefaultHandler.uncaughtException(thread, ex);
 	    }else{
 			android.os.Process.killProcess(Process.myPid());

@@ -17,7 +17,7 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        XLog.startMethod(TAG, "onCreate");
+        XLog.startMethod();
         setContentView(R.layout.activity_main);
 
 
@@ -28,11 +28,11 @@ public class MainActivity extends Activity {
             XLog.d(TAG, "=== %s,%s ===", "XXX", "XXX");
         }
 
-        String a = "Null";
+        String a = null;
         try{
             a.length();
         }catch (NullPointerException e){
-            XLog.e(TAG,"=== %s Exception ===", e, a);
+            XLog.e("=== %s Exception ===", e, "Null");
         }
 
         Button sendLog = (Button)findViewById(R.id.send_log);
@@ -43,13 +43,13 @@ public class MainActivity extends Activity {
                 data.putExtra(Intent.EXTRA_EMAIL, new String[]{"test@test.com"});
                 data.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.app_name));
                 data.putExtra(Intent.EXTRA_TEXT, "这是我的LOG日志");
-                data.putExtra(Intent.EXTRA_STREAM, Uri.parse("file://" + FileUtil.getTodayLogFilePath()));
+                data.putExtra(Intent.EXTRA_STREAM, Uri.parse("file://" + FileUtil.getTodayLogFile().getAbsolutePath()));
                 data.setType("message/rfc882");
                 startActivity(Intent.createChooser(data, getString(R.string.app_name)));
             }
         });
 
-        Button testCrash = (Button) findViewById(R.id.testCrash);
+        Button testCrash = findViewById(R.id.testCrash);
         testCrash.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -59,13 +59,13 @@ public class MainActivity extends Activity {
         });
 
 
-        XLog.endMethod(TAG, "onCreate");
+        XLog.endMethod();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        // 最后一个Activity退出销毁
-        XLog.destroy();
+        // 手动销毁
+        XLog.destroy(this);
     }
 }
