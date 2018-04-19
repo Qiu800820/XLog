@@ -65,6 +65,11 @@ public class XLogPrinterImpl implements XLogPrinter {
     }
 
     @Override
+    public void e(Throwable throwable) {
+        printLog(null, LogLevel.E, throwable);
+    }
+
+    @Override
     public void e(String msg, Object... args) {
         printLog(String.format(msg, args), LogLevel.E, null);
     }
@@ -102,7 +107,7 @@ public class XLogPrinterImpl implements XLogPrinter {
     }
 
     private void printLog(String msg, int logLevel, Throwable throwable){
-        if(msg == null){
+        if(msg == null && logLevel != LogLevel.E){
             return;
         }
         String tag = getClassNameInfo(METHOD_NAME, 3);

@@ -133,7 +133,7 @@ public class FileLogHelper {
 
     private void addLogToCache(String log) {
 
-        if (null == logCache) {
+        if (null == logCache || log == null) {
             return;
         }
 

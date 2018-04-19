@@ -31,7 +31,11 @@ public class MainActivity extends Activity {
         try{
             a.length();
         }catch (NullPointerException e){
+            XLog.e(e);
+            XLog.e(e.getMessage());
+            XLog.e("=== %s Exception ===",  "Null");
             XLog.e("=== %s Exception ===", e, "Null");
+            XLog.w("=== Null Exception ===", e);
         }
 
         Button sendLog = (Button)findViewById(R.id.send_log);

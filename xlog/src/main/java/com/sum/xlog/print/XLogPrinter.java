@@ -18,6 +18,8 @@ public interface XLogPrinter {
 
     void w(String msg, Throwable throwable);
 
+    void e(Throwable throwable);
+
     void e(String msg, Object... args);
 
     void e(String msg, Throwable throwable, Object... args);

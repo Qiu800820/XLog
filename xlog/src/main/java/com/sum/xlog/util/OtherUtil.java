@@ -18,7 +18,6 @@ public class OtherUtil {
 
     public static String formatLog(String tag, String message, Throwable e, int logLevel) {
 
-        // 获取日志时间
         String logTime = DateUtil.millis2String(System.currentTimeMillis(), "HH:mm:ss.SSS", false);
 
         StringBuilder stringBuilder = new StringBuilder();
@@ -31,9 +30,11 @@ public class OtherUtil {
         stringBuilder.append(getMethodPositionInfo());
         stringBuilder.append(",");
         stringBuilder.append(LogLevel.level2String(logLevel));
-        stringBuilder.append(",");
+        if(message != null){
+            stringBuilder.append(",");
+            stringBuilder.append(message);
+        }
 
-        stringBuilder.append(message);
 
         if (null != e) {
             stringBuilder.append("\n");
