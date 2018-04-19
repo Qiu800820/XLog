@@ -7,7 +7,7 @@
 
 Gradle构建:
 ```javascript
-compile 'com.sum.xlog:xlog:1.1.0'
+compile 'com.sum.xlog:xlog:1.1.1'
 ```
 
 

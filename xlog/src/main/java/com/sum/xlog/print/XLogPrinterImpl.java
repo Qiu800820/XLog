@@ -65,6 +65,11 @@ public class XLogPrinterImpl implements XLogPrinter {
     }
 
     @Override
+    public void e(String msg, Object... args) {
+        printLog(String.format(msg, args), LogLevel.E, null);
+    }
+
+    @Override
     public void e(String msg, Throwable throwable, Object... args) {
         printLog(String.format(msg, args), LogLevel.E, throwable);
     }

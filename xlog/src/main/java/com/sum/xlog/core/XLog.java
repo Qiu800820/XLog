@@ -99,6 +99,10 @@ public class XLog {
         xLogPrinter.w(msg, throwable);
     }
 
+    public static void e(String msg, Object... args) {
+        xLogPrinter.e(msg, args);
+    }
+
     public static void e(String msg, Throwable throwable, Object... args) {
         xLogPrinter.e(msg, throwable, args);
     }
