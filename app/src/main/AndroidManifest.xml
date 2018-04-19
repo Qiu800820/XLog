@@ -18,7 +18,6 @@
             </intent-filter>
         </activity>
 
-        <service android:name="com.sum.xlog.core.LogService" />
     </application>
 
 

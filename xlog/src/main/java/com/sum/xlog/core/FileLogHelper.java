@@ -25,9 +25,10 @@ public class FileLogHelper {
 
 
     public FileLogHelper() {
-        logCache = new ArrayList<String>(LOG_CACHE_POLL_SIZE);
+        logCache = new ArrayList<>(LOG_CACHE_POLL_SIZE);
         mExecutorService = Executors.newSingleThreadExecutor();
         mReentrantLock = new ReentrantLock();
+        deleteExpireFile();
     }
 
     public static FileLogHelper getInstance() {
@@ -53,20 +54,25 @@ public class FileLogHelper {
         String logMsg = OtherUtil.formatLog(tag, log, e, logLevel);
 
         addLogToCache(logMsg);
-        if (getCacheSize() >= LOG_CACHE_POLL_SIZE || isForceSave) {
 
-            mExecutorService.execute(new Runnable() {
-                @Override
-                public void run() {
-                    saveToFile();
-                }
-            });
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                saveToFile();
+            }
+        };
+
+        if(isForceSave){
+            runnable.run();
+        }else if (getCacheSize() >= LOG_CACHE_POLL_SIZE) {
+            mExecutorService.execute(runnable);
         }
+
+
     }
 
     private void saveToFile() {
         String logFilePath = initLogFile();
-
         if (null != logFilePath && logFilePath.trim().length() > 0) {
             BufferedWriter bw = null;
             mReentrantLock.lock();
@@ -98,22 +104,21 @@ public class FileLogHelper {
 
         try {
             File fileDir = FileUtil.getXLogDirFile();
-            if(fileDir != null && !fileDir.exists()){
+            if(!fileDir.exists()){
                 fileDir.mkdirs();
             }
 
             File file = FileUtil.getTodayLogFile();
-            if (file != null && !file.exists()) {
+            if (!file.exists()) {
                 file.createNewFile();
-                result = file.getAbsolutePath();
             }
+            result = file.getAbsolutePath();
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
         }
         return result;
     }
 
-    //释放资源
     public void destroy() {
         released = true;
         if (null != mExecutorService && !mExecutorService.isShutdown()) {
@@ -168,17 +173,23 @@ public class FileLogHelper {
 
     }
 
-    public void deleteExpireFile(){
-        XLogConfiguration xLogConfiguration = XLog.getXLogConfiguration();
-        if(xLogConfiguration == null)
-            return;
-        File fileDir = FileUtil.getXLogDirFile();
-        FileUtil.delOutDateFile(fileDir, xLogConfiguration.getFileLogRetentionPeriod());
+    private void deleteExpireFile(){
+        mExecutorService.execute(new Runnable() {
+            @Override
+            public void run() {
+                XLogConfiguration xLogConfiguration = XLog.getXLogConfiguration();
+                if(xLogConfiguration == null)
+                    return;
+                File fileDir = FileUtil.getXLogDirFile();
+                FileUtil.delOutDateFile(fileDir, xLogConfiguration.getFileLogRetentionPeriod());
 
-        boolean logFileDirSpaceMax = FileUtil.logFileDirSpaceMax(fileDir, xLogConfiguration.getFileLogDiskMemorySize());
-        if (logFileDirSpaceMax) {
-            FileUtil.delAllFileByDir(fileDir);
-        }
+                boolean logFileDirSpaceMax = FileUtil.logFileDirSpaceMax(fileDir, xLogConfiguration.getFileLogDiskMemorySize());
+                if (logFileDirSpaceMax) {
+                    FileUtil.delAllFileByDir(fileDir);
+                }
+            }
+        });
+
     }
 
 }

@@ -40,5 +40,33 @@ public class LogLevel
      */
     public static final byte WTF = 5;
 
+    public static String level2String(int level){
+        String levelString;
+        switch (level){
+            case V:
+                levelString = "V";
+                break;
+            case D:
+                levelString = "D";
+                break;
+            case I:
+                levelString = "I";
+                break;
+            case W:
+                levelString = "W";
+                break;
+            case E:
+                levelString = "E";
+                break;
+            case WTF:
+                levelString = "WTF";
+                break;
+            default:
+                levelString = "D";
+                break;
+        }
+        return levelString;
+    }
+
     private LogLevel() {}
 }

@@ -24,8 +24,8 @@ public class MainActivity extends Activity {
         //因为XLog有缓冲区，  满20条才会写入文件  降低CPU负担
         for(int i = 0; i < 10; i++){
             XLog.d("=== XXX ===");
-            XLog.d(TAG, "=== xxx ===");
-            XLog.d(TAG, "=== %s,%s ===", "XXX", "XXX");
+            XLog.d("=== xxx ===");
+            XLog.d("=== %s,%s ===", "XXX", "XXX");
         }
 
         String a = null;
@@ -65,7 +65,5 @@ public class MainActivity extends Activity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        // 手动销毁
-        XLog.destroy(this);
     }
 }

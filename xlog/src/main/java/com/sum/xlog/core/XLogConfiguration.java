@@ -2,7 +2,7 @@ package com.sum.xlog.core;
 
 import android.content.Context;
 
-import com.sum.xlog.crash.OnUpdateCrashInfoListener;
+import com.sum.xlog.crash.OnCrashInfoListener;
 import com.sum.xlog.print.LogLevel;
 
 import java.lang.Thread.UncaughtExceptionHandler;
@@ -75,7 +75,7 @@ public class XLogConfiguration {
      */
     private UncaughtExceptionHandler originalHandler = null;
 
-    private OnUpdateCrashInfoListener mOnUpdateCrashInfoListener;
+    private OnCrashInfoListener mOnCrashInfoListener;
 
 
     XLogConfiguration(Builder builder) {
@@ -87,7 +87,7 @@ public class XLogConfiguration {
         this.logFileSuffix = builder.logFileSuffix;
         this.crashHandlerOpen = builder.crashHandlerOpen;
         this.originalHandler = builder.originalHandler;
-        this.mOnUpdateCrashInfoListener = builder.mOnUpdateCrashInfoListener;
+        this.mOnCrashInfoListener = builder.mOnCrashInfoListener;
         this.fileLogRootPath = builder.fileLogRootPath;
 
     }
@@ -132,8 +132,8 @@ public class XLogConfiguration {
         return originalHandler;
     }
 
-    public OnUpdateCrashInfoListener getOnUpdateCrashInfoListener() {
-        return mOnUpdateCrashInfoListener;
+    public OnCrashInfoListener getOnCrashInfoListener() {
+        return mOnCrashInfoListener;
     }
 
     public static class Builder {
@@ -145,10 +145,10 @@ public class XLogConfiguration {
         private String logFileSuffix;
         private boolean crashHandlerOpen;
         private UncaughtExceptionHandler originalHandler = null;
-        private OnUpdateCrashInfoListener mOnUpdateCrashInfoListener = null;
+        private OnCrashInfoListener mOnCrashInfoListener = null;
         private String fileLogRootPath;
 
-        Builder(Context context){
+        public Builder(Context context){
             setFileLogDirName(context.getPackageName());
             setFileLogRootPath(context.getFilesDir().getAbsolutePath());
         }
@@ -164,10 +164,10 @@ public class XLogConfiguration {
 
         /**
          * 设置Crash用户上传日志信息
-         * @param mOnUpdateCrashInfoListener 用户上传事件{@link OnUpdateCrashInfoListener}
+         * @param mOnCrashInfoListener 用户上传事件{@link OnCrashInfoListener}
          */
-        public Builder setOnUpdateCrashInfoListener(OnUpdateCrashInfoListener mOnUpdateCrashInfoListener) {
-            this.mOnUpdateCrashInfoListener = mOnUpdateCrashInfoListener;
+        public Builder setOnCrashInfoListener(OnCrashInfoListener mOnCrashInfoListener) {
+            this.mOnCrashInfoListener = mOnCrashInfoListener;
             return this;
         }
 

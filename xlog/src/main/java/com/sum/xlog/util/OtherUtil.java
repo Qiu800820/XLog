@@ -1,33 +1,36 @@
 package com.sum.xlog.util;
 
+import android.os.Process;
 import android.util.Log;
+
+import com.sum.xlog.print.LogLevel;
 
 import java.io.Closeable;
 
-import static com.sum.xlog.util.FileUtil.DATE_PATTERN;
+import static com.sum.xlog.print.XLogPrinterImpl.METHOD_NAME;
 
 
 public class OtherUtil {
 
     private static final String TAG = "OtherUtil";
-    private static final String METHOD_NAME = "printLog";
+
 
 
     public static String formatLog(String tag, String message, Throwable e, int logLevel) {
 
         // 获取日志时间
-        String logTime = DateUtil.millis2String(System.currentTimeMillis(), DATE_PATTERN, false);
+        String logTime = DateUtil.millis2String(System.currentTimeMillis(), "HH:mm:ss.SSS", false);
 
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(logTime);
         stringBuilder.append(",");
-        stringBuilder.append(Thread.currentThread().getId());
+        stringBuilder.append(Process.myPid());
         stringBuilder.append(",");
         stringBuilder.append(tag);
         stringBuilder.append(",");
         stringBuilder.append(getMethodPositionInfo());
         stringBuilder.append(",");
-        stringBuilder.append(logLevel);
+        stringBuilder.append(LogLevel.level2String(logLevel));
         stringBuilder.append(",");
 
         stringBuilder.append(message);
@@ -42,19 +45,18 @@ public class OtherUtil {
     }
 
 
-
     /**
      * 得到异常所在代码位置信息
      */
-    private static StackTraceElement getStackTraceElementInfo() {
+    private static StackTraceElement getStackTraceElementInfo(String stackMethod, int stackIndex) {
         StackTraceElement stackTraceElement = null;
         StackTraceElement[] traces = Thread.currentThread().getStackTrace();
         int index = 0;
         int size = traces != null?traces.length:0;
         for (int i = 0; i < size; i++) {
             StackTraceElement trace = traces[i];
-            if (trace.getMethodName().contains(METHOD_NAME)) {
-                index = i + 2;
+            if (trace.getMethodName().contains(stackMethod)) {
+                index = i + stackIndex;
                 break;
             }
         }
@@ -67,22 +69,24 @@ public class OtherUtil {
     }
 
     private static String getMethodPositionInfo() {
-        StackTraceElement stackTraceElement = getStackTraceElementInfo();
+        StackTraceElement stackTraceElement = getStackTraceElementInfo(METHOD_NAME, 3);
         String methodPositionInfo = null;
         if(stackTraceElement != null){
-            methodPositionInfo = String.format("%s : %s(%s)", stackTraceElement.getFileName(),
-                    stackTraceElement.getMethodName(), stackTraceElement.getLineNumber());
+            methodPositionInfo = String.format("%s(%s:%s)",
+                    stackTraceElement.getMethodName(),
+                    getSimpleClassName(stackTraceElement.getClassName()),
+                    stackTraceElement.getLineNumber());
         }
         return methodPositionInfo;
     }
 
-    public static String getClassNameInfo(){
-        StackTraceElement stackTraceElement = getStackTraceElementInfo();
-        return stackTraceElement != null?stackTraceElement.getClassName():null;
+    public static String getClassNameInfo(String stackMethod, int stackIndex){
+        StackTraceElement stackTraceElement = getStackTraceElementInfo(stackMethod, stackIndex);
+        return stackTraceElement != null?getSimpleClassName(stackTraceElement.getClassName()):null;
     }
 
-    public static String getMethodNameInfo() {
-        StackTraceElement stackTraceElement = getStackTraceElementInfo();
+    public static String getMethodNameInfo(String stackMethod, int stackIndex) {
+        StackTraceElement stackTraceElement = getStackTraceElementInfo(stackMethod, stackIndex);
         return stackTraceElement != null?stackTraceElement.getMethodName():null;
     }
 
@@ -94,6 +98,14 @@ public class OtherUtil {
                 Log.e(TAG, e.getMessage(), e);
             }
         }
+    }
 
+    public static String getSimpleClassName(String className){
+        int lastIndex = className.lastIndexOf(".");
+        int index = lastIndex + 1;
+        if (lastIndex > 0 && index < className.length()) {
+            return className.substring(index);
+        }
+        return className;
     }
 }

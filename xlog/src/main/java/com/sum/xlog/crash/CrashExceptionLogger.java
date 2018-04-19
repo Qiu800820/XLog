@@ -19,37 +19,38 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class CrashExceptionLogger implements CrashHandler.OnCaughtCrashExceptionListener
-{
-    
+public class CrashExceptionLogger implements CrashHandler.OnCaughtCrashExceptionListener {
+
     public static final String TAG = "CrashExceptionProcess";
-    /** 引用程序Context **/
+    /**
+     * 引用程序Context
+     **/
     private Context mAppContext;
-    /** 用来存储设备信息和异常信息 */
+    /**
+     * 用来存储设备信息和异常信息
+     */
     private Map<String, String> infos = new HashMap<String, String>();
-    
-    public CrashExceptionLogger(Context context)
-    {
+
+    public CrashExceptionLogger(Context context) {
         mAppContext = context;
     }
 
     @Override
-    public void onCaughtCrashException(Thread thread, Throwable ex)
-    {
+    public void onCaughtCrashException(Thread thread, Throwable ex) {
         collectDeviceInfo(mAppContext);
         logCrashInfo(ex);
-        OnUpdateCrashInfoListener mOnUpdateCrashInfoListener = XLog.getXLogConfiguration().getOnUpdateCrashInfoListener();
+        OnCrashInfoListener mOnCrashInfoListener = XLog.getXLogConfiguration().getOnCrashInfoListener();
 
-        if (mOnUpdateCrashInfoListener != null) {
+        if (mOnCrashInfoListener != null) {
             File file = FileUtil.getTodayLogFile();
             if (file.exists())
-                mOnUpdateCrashInfoListener.onUpdateCrashInfo(file);
+                mOnCrashInfoListener.onUpdateCrashInfo(file);
         }
-                
     }
-    
+
     /**
      * 收集设备参数信息
+     *
      * @param ctx 上下文文本对象
      */
     private void collectDeviceInfo(Context ctx) {
@@ -77,10 +78,10 @@ public class CrashExceptionLogger implements CrashHandler.OnCaughtCrashException
             }
         }
     }
-    
-    
-    private void logCrashInfo(Throwable ex){
-        
+
+
+    private void logCrashInfo(Throwable ex) {
+
         StringBuilder sb = new StringBuilder();
         for (Map.Entry<String, String> entry : infos.entrySet()) {
             String key = entry.getKey();
@@ -99,10 +100,9 @@ public class CrashExceptionLogger implements CrashHandler.OnCaughtCrashException
         String result = writer.toString();
         printWriter.close();
         String crashLog = sb.append(result).toString();
-        
+
         XLog.crash(crashLog);
     }
-    
-    
+
 
 }
