@@ -26,7 +26,7 @@ public class XLogPrinterImpl implements XLogPrinter {
 
     @Override
     public void v(String msg, Object... args) {
-        printLog(String.format(msg, args), LogLevel.V, null);
+        printLog(format(msg, args), LogLevel.V, null);
     }
 
     @Override
@@ -36,7 +36,7 @@ public class XLogPrinterImpl implements XLogPrinter {
 
     @Override
     public void d(String msg, Object... args) {
-        printLog(String.format(msg, args), LogLevel.D, null);
+        printLog(format(msg, args), LogLevel.D, null);
     }
 
     @Override
@@ -46,7 +46,7 @@ public class XLogPrinterImpl implements XLogPrinter {
 
     @Override
     public void i(String msg, Object... args) {
-        printLog(String.format(msg, args), LogLevel.I, null);
+        printLog(format(msg, args), LogLevel.I, null);
     }
 
     @Override
@@ -56,7 +56,7 @@ public class XLogPrinterImpl implements XLogPrinter {
 
     @Override
     public void w(String msg, Object... args) {
-        printLog(String.format(msg, args), LogLevel.W, null);
+        printLog(format(msg, args), LogLevel.W, null);
     }
 
     @Override
@@ -71,17 +71,17 @@ public class XLogPrinterImpl implements XLogPrinter {
 
     @Override
     public void e(String msg, Object... args) {
-        printLog(String.format(msg, args), LogLevel.E, null);
+        printLog(format(msg, args), LogLevel.E, null);
     }
 
     @Override
     public void e(String msg, Throwable throwable, Object... args) {
-        printLog(String.format(msg, args), LogLevel.E, throwable);
+        printLog(format(msg, args), LogLevel.E, throwable);
     }
 
     @Override
     public void wtf(String msg, Object... args) {
-        printLog(String.format(msg, args), LogLevel.WTF, null);
+        printLog(format(msg, args), LogLevel.WTF, null);
     }
 
     @Override
@@ -104,6 +104,10 @@ public class XLogPrinterImpl implements XLogPrinter {
     public void endMethod() {
         printLog(String.format(METHOD_END_MSG_FORMAT, getMethodNameInfo("endMethod", 2)),
                 LogLevel.D, null);
+    }
+
+    private String format(String msg, Object... args){
+        return args != null && args.length > 0?String.format(msg, args):msg;
     }
 
     private void printLog(String msg, int logLevel, Throwable throwable){
