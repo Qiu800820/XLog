@@ -24,6 +24,7 @@ public class MainActivity extends Activity {
         //因为XLog有缓冲区，  满20条才会写入文件  降低CPU负担
         for(int i = 0; i < 10; i++){
             XLog.d("=== XXX ===");
+            XLog.d("=== test url encode text %2f ===");
             XLog.d("=== %s,%s ===", "XXX", "XXX");
         }
 

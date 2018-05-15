@@ -1,10 +1,12 @@
 package com.sum.xlog.core;
 
 import android.content.Context;
+import android.os.Environment;
 
 import com.sum.xlog.crash.OnCrashInfoListener;
 import com.sum.xlog.print.LogLevel;
 
+import java.io.File;
 import java.lang.Thread.UncaughtExceptionHandler;
 
 public class XLogConfiguration {
@@ -150,7 +152,11 @@ public class XLogConfiguration {
 
         public Builder(Context context){
             setFileLogDirName(context.getPackageName());
-            setFileLogRootPath(context.getFilesDir().getAbsolutePath());
+            File logFile = context.getExternalFilesDir(Environment.DIRECTORY_ALARMS);
+            if (logFile == null){
+                logFile = context.getFilesDir();
+            }
+            setFileLogRootPath(logFile.getAbsolutePath());
         }
 
         /**
