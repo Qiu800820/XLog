@@ -61,7 +61,7 @@ public class MainActivity extends Activity {
                 a.length();
             }
         });
-
+        new Test().show();
 
         XLog.endMethod();
     }

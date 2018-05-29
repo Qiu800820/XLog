@@ -7,7 +7,7 @@
 
 Gradle构建:
 ```javascript
-compile 'com.sum.xlog:xlog:1.1.2'
+compile 'com.sum.xlog:xlog:1.1.4'
 ```
 
 
@@ -43,4 +43,11 @@ FileUtil.getXLogDirFile() //获取LOG日志文件夹
 
 
 ```
+
+混淆
+```java
+-keepattributes SourceFile,LineNumberTable
+-keep class com.sum.xlog.print.XLogPrinterImpl {*;}
+```
+
 Email： <qiujunsen@163.com><br>

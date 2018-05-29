@@ -15,7 +15,6 @@ public class OtherUtil {
     private static final String TAG = "OtherUtil";
 
 
-
     public static String formatLog(String tag, String message, Throwable e, int logLevel) {
 
         String logTime = DateUtil.millis2String(System.currentTimeMillis(), "HH:mm:ss.SSS", false);
@@ -30,7 +29,7 @@ public class OtherUtil {
         stringBuilder.append(getMethodPositionInfo());
         stringBuilder.append(",");
         stringBuilder.append(LogLevel.level2String(logLevel));
-        if(message != null){
+        if (message != null) {
             stringBuilder.append(",");
             stringBuilder.append(message);
         }
@@ -53,7 +52,7 @@ public class OtherUtil {
         StackTraceElement stackTraceElement = null;
         StackTraceElement[] traces = Thread.currentThread().getStackTrace();
         int index = 0;
-        int size = traces != null?traces.length:0;
+        int size = traces != null ? traces.length : 0;
         for (int i = 0; i < size; i++) {
             StackTraceElement trace = traces[i];
             if (trace.getMethodName().contains(stackMethod)) {
@@ -62,7 +61,7 @@ public class OtherUtil {
             }
         }
 
-        if(index < size){
+        if (index < size) {
             stackTraceElement = traces[index];
         }
 
@@ -72,23 +71,23 @@ public class OtherUtil {
     private static String getMethodPositionInfo() {
         StackTraceElement stackTraceElement = getStackTraceElementInfo(METHOD_NAME, 3);
         String methodPositionInfo = null;
-        if(stackTraceElement != null){
+        if (stackTraceElement != null) {
             methodPositionInfo = String.format("%s(%s:%s)",
                     stackTraceElement.getMethodName(),
-                    getSimpleClassName(stackTraceElement.getClassName()),
+                    stackTraceElement.getFileName(),
                     stackTraceElement.getLineNumber());
         }
         return methodPositionInfo;
     }
 
-    public static String getClassNameInfo(String stackMethod, int stackIndex){
+    public static String getClassNameInfo(String stackMethod, int stackIndex) {
         StackTraceElement stackTraceElement = getStackTraceElementInfo(stackMethod, stackIndex);
-        return stackTraceElement != null?getSimpleClassName(stackTraceElement.getClassName()):null;
+        return stackTraceElement != null?getSimpleFileName(stackTraceElement.getFileName()):null;
     }
 
     public static String getMethodNameInfo(String stackMethod, int stackIndex) {
         StackTraceElement stackTraceElement = getStackTraceElementInfo(stackMethod, stackIndex);
-        return stackTraceElement != null?stackTraceElement.getMethodName():null;
+        return stackTraceElement != null ? stackTraceElement.getMethodName() : null;
     }
 
     public static void closeQuietly(Closeable closeable) {
@@ -101,12 +100,13 @@ public class OtherUtil {
         }
     }
 
-    public static String getSimpleClassName(String className){
-        int lastIndex = className.lastIndexOf(".");
-        int index = lastIndex + 1;
-        if (lastIndex > 0 && index < className.length()) {
-            return className.substring(index);
+    public static String getSimpleFileName(String fileName) {
+        if (fileName == null || fileName.length() == 0)
+            return "Unknown";
+        int index = fileName.indexOf(".");
+        if (index > 0) {
+            return fileName.substring(0, index);
         }
-        return className;
+        return fileName;
     }
 }
